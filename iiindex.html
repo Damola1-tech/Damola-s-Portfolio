@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lawal Oyindamola — Frontend Developer & UI/UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg:#0d0d0d; --bg2:#141414; --bg3:#1c1c1c;
+    --amber:#e8a020; --amber-lt:#f5b83d;
+    --text:#f0ede8; --muted:#6a6a6a; --muted2:#9a9a9a;
+    --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.12);
+    --display:'Cabinet Grotesk',sans-serif;
+    --body:'Cabinet Grotesk',sans-serif;
+    --mono:'DM Mono',monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background:var(--bg); color:var(--text); font-family:var(--body); font-size:15px; line-height:1.7; overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 3rem; height:64px; background:rgba(13,13,13,0.88); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+  .nav-logo { font-family:var(--display); font-weight:800; font-size:1.05rem; letter-spacing:-0.5px; color:var(--text); }
+  .nav-logo span { color:var(--amber); }
+  .nav-tabs { display:flex; gap:2px; list-style:none; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:4px; }
+  .nav-tabs li a { display:flex; align-items:center; gap:6px; padding:6px 16px; font-size:12px; font-weight:500; color:var(--muted2); text-decoration:none; border-radius:6px; transition:all 0.2s; }
+  .nav-tabs li a:hover, .nav-tabs li a.active { background:var(--bg2); color:var(--text); }
+  .nav-tabs li a.active { color:var(--amber); }
+  .nav-right { display:flex; align-items:center; gap:1rem; }
+  .nav-badge { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); font-family:var(--mono); }
+  .dot { width:6px; height:6px; border-radius:50%; background:#3ddc84; animation:blink 2s infinite; flex-shrink:0; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  .cv-btn { padding:7px 16px; background:var(--amber); color:#000; font-size:11px; font-weight:700; border:none; border-radius:6px; cursor:pointer; text-decoration:none; letter-spacing:0.5px; transition:background 0.2s; white-space:nowrap; }
+  .cv-btn:hover { background:var(--amber-lt); }
+
+  /* HERO */
+  .hero { min-height:100vh; display:grid; grid-template-columns:1fr 380px; align-items:center; padding:0 3rem; padding-top:64px; max-width:1160px; margin:0 auto; gap:3rem; position:relative; }
+  .hero::before { content:''; position:fixed; top:0; right:0; width:55%; height:100vh; background:radial-gradient(ellipse at 70% 30%, rgba(232,160,32,0.11) 0%, transparent 65%); pointer-events:none; z-index:0; }
+  .hero-left { position:relative; z-index:1; }
+  .hero-eyebrow { display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--amber); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:1.5rem; }
+  .hero-eyebrow::before { content:''; width:20px; height:1px; background:var(--amber); }
+  h1 { font-family:var(--display); font-size:clamp(3rem,6vw,5.2rem); font-weight:800; line-height:1; letter-spacing:-3px; margin-bottom:2rem; color:var(--text); }
+  h1 em { font-style:normal; color:var(--amber); }
+  .hero-roles { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:2rem; }
+  .hero-role { font-size:11px; padding:5px 14px; border:1px solid var(--border2); border-radius:100px; color:var(--muted2); font-family:var(--mono); background:var(--bg2); }
+  .hero-role.active { border-color:var(--amber); color:var(--amber); background:rgba(232,160,32,0.08); }
+  .hero-contacts { display:flex; flex-direction:column; gap:10px; }
+  .hero-contact-row { display:flex; flex-wrap:wrap; gap:1.2rem; }
+  .hero-contact-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted2); text-decoration:none; transition:color 0.2s; }
+  .hero-contact-item:hover { color:var(--amber); }
+  .hero-contact-icon { width:22px; height:22px; border:1px solid var(--border2); border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--amber); flex-shrink:0; font-family:var(--mono); font-size:10px; }
+  .hero-right { position:relative; z-index:1; display:flex; align-items:center; justify-content:center; }
+  .hero-photo-wrap { width:320px; height:400px; border-radius:12px; overflow:hidden; background:var(--bg3); border:1px solid var(--border2); position:relative; display:flex; align-items:center; justify-content:center; }
+  .hero-photo-wrap img { width:100%; height:100%; object-fit:cover; }
+  .hero-photo-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; color:var(--muted); font-size:11px; font-family:var(--mono); text-align:center; padding:2rem; }
+  .hero-photo-wrap::after { content:''; position:absolute; bottom:-40px; right:-40px; width:180px; height:180px; background:radial-gradient(circle, rgba(232,160,32,0.18) 0%, transparent 70%); pointer-events:none; z-index:-1; }
+
+  /* SECTIONS */
+  .section { max-width:1000px; margin:0 auto; padding:6rem 3rem; border-top:1px solid var(--border); }
+  .section-header { display:flex; align-items:baseline; gap:1rem; margin-bottom:3rem; }
+  .section-num { font-family:var(--mono); font-size:11px; color:var(--amber); letter-spacing:1px; }
+  .section-title { font-family:var(--display); font-size:2rem; font-weight:800; letter-spacing:-1px; color:var(--text); }
+
+  /* SUMMARY */
+  .summary-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:3rem; align-items:start; }
+  .summary-bio { font-size:15px; color:var(--muted2); line-height:1.9; }
+  .summary-bio strong { color:var(--text); font-weight:600; }
+  .summary-stats { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .stat-box { background:var(--bg2); padding:1.5rem; }
+  .stat-num { font-family:var(--display); font-size:2.2rem; font-weight:800; color:var(--amber); line-height:1; margin-bottom:4px; }
+  .stat-label { font-size:11px; color:var(--muted); font-family:var(--mono); }
+
+  /* TOOLS */
+  .tools-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(88px,1fr)); gap:10px; margin-bottom:3rem; }
+  .tool-item { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1rem 0.6rem; text-align:center; transition:border-color 0.2s,transform 0.2s; }
+  .tool-item:hover { border-color:var(--amber); transform:translateY(-3px); }
+  .tool-svg { width:32px; height:32px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; }
+  .tool-svg svg { width:32px; height:32px; }
+  .tool-name { font-size:10px; color:var(--muted2); font-family:var(--mono); }
+
+  /* SKILL BARS */
+  .skills-bars-grid { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; }
+  .skill-group-title { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); font-family:var(--mono); margin-bottom:1.2rem; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .skill-row { display:flex; align-items:center; margin-bottom:1rem; gap:1rem; }
+  .skill-label { font-size:13px; color:var(--text); flex-shrink:0; min-width:130px; }
+  .skill-label small { font-size:9px; color:var(--amber); font-family:var(--mono); margin-left:4px; padding:1px 5px; border:1px solid rgba(232,160,32,0.3); border-radius:3px; }
+  .skill-track { flex:1; height:3px; background:var(--bg3); border-radius:2px; overflow:hidden; }
+  .skill-fill { height:100%; background:linear-gradient(90deg,rgba(232,160,32,0.5),var(--amber)); border-radius:2px; }
+
+  /* PROJECTS GRID */
+  .projects-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:2rem; }
+
+  .proj-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:border-color 0.25s, transform 0.25s; text-decoration:none; color:inherit; display:flex; flex-direction:column; }
+  .proj-card:hover { border-color:rgba(232,160,32,0.4); transform:translateY(-4px); }
+
+  /* preview thumbnail */
+.proj-thumb {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: var(--bg3);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.proj-thumb iframe {
+  width: 1280px;
+  height: 720px;
+  transform-origin: top left;
+  pointer-events: none;
+  border: none;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+ .proj-thumb-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent 40%, var(--bg2) 85%);
+  z-index:2;
+}
+  .proj-thumb-fallback {
+    position:absolute; inset:0; z-index:1;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:11px; color:var(--muted);
+    flex-direction:column; gap:6px;
+  }
+  .proj-thumb img { width:100%; height:100%; object-fit:cover; object-position:top; }
+
+  /* top accent bar */
+  .proj-card::before { content:''; display:block; height:2px; background:var(--amber); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+  .proj-card:hover::before { transform:scaleX(1); }
+
+  .proj-body { padding:1.4rem; display:flex; flex-direction:column; flex:1; }
+  .proj-top { display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap; }
+  .proj-name { font-family:var(--display); font-size:1rem; font-weight:700; color:var(--text); }
+  .proj-type { font-size:9px; padding:2px 7px; background:rgba(232,160,32,0.1); border:1px solid rgba(232,160,32,0.25); border-radius:4px; color:var(--amber); font-family:var(--mono); }
+  .proj-desc { font-size:12px; color:var(--muted2); line-height:1.65; margin-bottom:1rem; flex:1; }
+  .proj-tags { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:1rem; }
+  .proj-tag { font-size:9px; padding:2px 7px; background:var(--bg3); border:1px solid var(--border2); border-radius:4px; color:var(--muted2); font-family:var(--mono); }
+  .proj-link { font-size:10px; color:var(--amber); font-family:var(--mono); display:flex; align-items:center; gap:4px; letter-spacing:0.5px; margin-top:auto; }
+
+  /* EDUCATION */
+  .edu-row { display:flex; align-items:flex-start; gap:1.5rem; padding:1.5rem 0; border-bottom:1px solid var(--border); }
+  .edu-row:last-child { border-bottom:none; }
+  .edu-dot { width:10px; height:10px; border-radius:50%; background:var(--amber); margin-top:6px; flex-shrink:0; }
+  .edu-degree { font-weight:700; font-size:14px; color:var(--text); margin-bottom:2px; }
+  .edu-school { font-size:13px; color:var(--amber); margin-bottom:2px; }
+  .edu-date { font-size:11px; color:var(--muted); font-family:var(--mono); }
+
+  /* CONTACT */
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+  .contact-info p { font-size:14px; color:var(--muted2); line-height:1.85; margin-bottom:2rem; }
+  .contact-links-list { display:flex; flex-direction:column; gap:10px; }
+  .clink { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--muted2); font-size:13px; transition:all 0.2s; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg2); }
+  .clink:hover { color:var(--amber); border-color:rgba(232,160,32,0.3); background:rgba(232,160,32,0.04); }
+  .clink-icon { width:32px; height:32px; background:var(--bg3); border:1px solid var(--border); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--amber); flex-shrink:0; font-family:var(--mono); font-size:11px; }
+  .contact-form { display:flex; flex-direction:column; gap:1rem; }
+  .form-group { display:flex; flex-direction:column; gap:5px; }
+  .form-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); font-family:var(--mono); }
+  .form-input,.form-textarea { background:var(--bg2); border:1px solid var(--border2); color:var(--text); font-family:var(--body); font-size:14px; padding:0.7rem 1rem; outline:none; border-radius:6px; transition:border-color 0.2s; resize:none; width:100%; }
+  .form-input:focus,.form-textarea:focus { border-color:var(--amber); box-shadow:0 0 0 3px rgba(232,160,32,0.08); }
+  .form-textarea { min-height:100px; }
+  .submit-btn { padding:0.75rem 1.5rem; background:var(--amber); color:#000; font-weight:700; font-size:13px; border:none; border-radius:6px; cursor:pointer; font-family:var(--body); transition:background 0.2s; align-self:flex-start; }
+  .submit-btn:hover { background:var(--amber-lt); }
+
+  footer { border-top:1px solid var(--border); padding:2rem 3rem; display:flex; align-items:center; justify-content:space-between; max-width:1000px; margin:0 auto; }
+  .footer-note { font-size:11px; color:var(--muted); font-family:var(--mono); }
+  .footer-note span { color:var(--amber); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .hero-eyebrow{animation:fadeUp 0.6s ease both}
+  h1{animation:fadeUp 0.6s ease 0.1s both}
+  .hero-roles{animation:fadeUp 0.6s ease 0.2s both}
+  .hero-contacts{animation:fadeUp 0.6s ease 0.3s both}
+  .hero-right{animation:fadeUp 0.7s ease 0.15s both}
+
+@media(max-width:768px){
+  nav{padding:0 1.2rem} .nav-tabs{display:none}
+  .hero{grid-template-columns:1fr;padding:5rem 1.5rem 3rem} .hero-right{display:none}
+  .section{padding:4rem 1.5rem}
+  .summary-grid,.skills-bars-grid,.contact-grid{grid-template-columns:1fr}
+  footer{padding:1.5rem;flex-direction:column;gap:0.5rem;text-align:center}
+  .projects-grid{grid-template-columns:1fr}
+  .proj-thumb iframe { transform:scale(0.28
+    ); width:1280px; height:720px; }
+  .proj-thumb { height:250px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Lawal <span>O.</span></div>
+  <ul class="nav-tabs">
+    <li><a href="#home" class="active">🏠 Home</a></li>
+    <li><a href="#summary">📄 Summary</a></li>
+    <li><a href="#experience">💼 Projects</a></li>
+    <li><a href="#skills">⚡ Skills</a></li>
+    <li><a href="#contact">✉ Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="Oyindamola_CV.docx" download class="cv-btn">Download CV</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Frontend Developer &amp; UI/UX Designer</div>
+    <h1>Lawal<br><em>Oyindamola-</em><br>David.</h1>
+    <div class="hero-roles">
+      <span class="hero-role active">Frontend Dev</span>
+      <span class="hero-role active">UI/UX Design</span>
+      <span class="hero-role">Data Analysis ↗</span>
+      <span class="hero-role">Backend Dev ↗</span>
+      <span class="hero-role">400L · Nigeria</span>
+    </div>
+    <div class="hero-contacts">
+      <div class="hero-contact-row">
+        <a href="mailto:lawaloyindamolashinaayomi@gmail.com" class="hero-contact-item">
+          <div class="hero-contact-icon">✉</div>
+          lawaloyindamolashinaayomi@gmail.com
+        </a>
+      </div>
+      <div class="hero-contact-row">
+        <a href="https://github.com/Damola1-tech" target="_blank" class="hero-contact-item">
+          <div class="hero-contact-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+          github.com/Damola1-tech
+        </a>
+        <a href="https://twitter.com/ShinaayomiLawal" target="_blank" class="hero-contact-item">
+          <div class="hero-contact-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+          @ShinaayomiLawal
+        </a>
+        <a class="hero-contact-item" style="cursor:default;">
+          <div class="hero-contact-icon">📍</div>
+          Ekiti State, Nigeria
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-wrap">
+      <img src="my picture.jpg" style="width:100%;height:100%;object-fit:cover;">
+      <!-- <div class="hero-photo-placeholder">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="22" r="12" stroke="#6a6a6a" stroke-width="2"/>
+          <path d="M8 56c0-13.255 10.745-24 24-24s24 10.745 24 24" stroke="#6a6a6a" stroke-width="2"/>
+        </svg>
+        <span>Your photo goes here</span> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-header"><span class="section-num">01 </span><h2 class="section-title">Summary</h2></div>
+  <div class="summary-grid">
+    <p class="summary-bio">
+      I'm <strong>Lawal Oyindamola</strong>, a final-year Computer Science student and frontend developer based in Ekiti State, Nigeria. I design and build clean, functional web products with a strong eye for UI/UX detail, always focused on solving real problems.<br><br>
+      I've shipped products across healthcare access, student housing, and business registration, and I'm actively expanding my stack into <strong>data analysis</strong> and <strong>backend development</strong>.
+    </p>
+    <div class="summary-stats">
+      <div class="stat-box"><div class="stat-num">5+</div><div class="stat-label">Projects shipped</div></div>
+      <div class="stat-box"><div class="stat-num">400L</div><div class="stat-label">Current level</div></div>
+      <div class="stat-box"><div class="stat-num">1+</div><div class="stat-label">Years experience</div></div>
+      <div class="stat-box"><div class="stat-num">NG</div><div class="stat-label">Based in Nigeria</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="section-header"><span class="section-num">02 </span><h2 class="section-title">Skills</h2></div>
+  <div class="tools-grid">
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32"><path d="M5 3l1.8 20.4L16 26l9.2-2.6L27 3H5z" fill="#E44D26"/><path d="M16 24.5l7.4-2.1 1.6-17.4H16v19.5z" fill="#F16529"/><path d="M16 13.5H11.5l-.3-3.5H16V6.5H7.5l.9 10H16v-3zm0 6.5l-.1.1-3.7-1-.2-2.5H8.9l.5 5.5 6.5 1.8.1-.1V20z" fill="#EBEBEB"/><path d="M16 13.5v3h4.2l-.4 4.6-3.8 1v3.3l6.5-1.8.9-10H16zm0-7v3.5h8.2l.3-3.5H16z" fill="#fff"/></svg></div><div class="tool-name">HTML5</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32"><path d="M5 3l1.8 20.4L16 26l9.2-2.6L27 3H5z" fill="#1572B6"/><path d="M16 24.5l7.4-2.1 1.6-17.4H16v19.5z" fill="#33A9DC"/><path d="M16 13.5H11.4l-.3-3.5H16V6.5H7.4l.9 10H16v-3zm0 6.5l-.1.1-3.7-1-.2-2.5H8.8l.5 5.5 6.6 1.8V20z" fill="#EBEBEB"/><path d="M16 13.5v3h4l-.4 4.6-3.6 1v3.3l6.5-1.8.5-5.3.4-4.8H16zm0-7v3.5h8l.3-3.5H16z" fill="#fff"/></svg></div><div class="tool-name">CSS3</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32"><rect width="32" height="32" fill="#F7DF1E" rx="2"/><path d="M9 25.2l2.2-1.35c.43.76.82 1.4 1.75 1.4.9 0 1.46-.35 1.46-1.72V14.6h2.72v8.97c0 2.83-1.66 4.12-4.08 4.12-2.19 0-3.46-1.13-4.07-2.5zm9.6-.3l2.2-1.28c.58.95 1.33 1.65 2.66 1.65 1.12 0 1.83-.56 1.83-1.33 0-.93-.73-1.25-1.97-1.8l-.68-.29c-1.95-.83-3.25-1.88-3.25-4.08 0-2.03 1.55-3.58 3.96-3.58 1.72 0 2.96.6 3.85 2.16l-2.1 1.35c-.47-.83-.97-1.16-1.75-1.16-.8 0-1.3.5-1.3 1.16 0 .81.5 1.14 1.67 1.64l.68.29c2.3.98 3.6 1.99 3.6 4.24 0 2.43-1.9 3.77-4.47 3.77-2.5 0-4.12-1.19-4.93-2.74z" fill="#000"/></svg></div><div class="tool-name">JavaScript</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="2.8" fill="#61DAFB"/><ellipse cx="16" cy="16" rx="12" ry="4.5" stroke="#61DAFB" stroke-width="1.5"/><ellipse cx="16" cy="16" rx="12" ry="4.5" stroke="#61DAFB" stroke-width="1.5" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="12" ry="4.5" stroke="#61DAFB" stroke-width="1.5" transform="rotate(120 16 16)"/></svg></div><div class="tool-name">React</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><path d="M11 28a5 5 0 005-5v-5h-5a5 5 0 000 10z" fill="#0ACF83"/><path d="M6 13a5 5 0 015-5h5v10h-5a5 5 0 01-5-5z" fill="#A259FF"/><path d="M6 8a5 5 0 015-5h5v10h-5a5 5 0 01-5-5z" fill="#F24E1E"/><path d="M16 3h5a5 5 0 010 10h-5V3z" fill="#FF7262"/><path d="M26 13a5 5 0 11-10 0 5 5 0 0110 0z" fill="#1ABCFE"/></svg></div><div class="tool-name">Figma</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="sb1" x1="16" y1="3" x2="23" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#249361"/><stop offset="1" stop-color="#3ECF8E"/></linearGradient><linearGradient id="sb2" x1="16" y1="29" x2="9" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#3ECF8E"/><stop offset="1" stop-color="#3ECF8E"/></linearGradient></defs><path d="M17.2 3.1c-.7-1.1-2.4-.6-2.4.7V16h8.6c1 0 1.5-1.1.9-1.9L17.2 3.1z" fill="url(#sb1)"/><path d="M14.8 28.9c.7 1.1 2.4.6 2.4-.7V16H8.6c-1 0-1.5 1.1-.9 1.9l7.1 11z" fill="url(#sb2)" fill-opacity=".9"/></svg></div><div class="tool-name">Supabase</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><path d="M29.5 14.5L17.5 2.5a1.7 1.7 0 00-2.4 0l-2.4 2.4 3 3a2 2 0 012.6 2.6l2.9 2.9a2 2 0 11-1.2 1.2l-2.7-2.7v7a2 2 0 11-1.6 0V11.5a2 2 0 01-1.1-2.6L11.7 6l-9.2 9.2a1.7 1.7 0 000 2.4l12 12a1.7 1.7 0 002.4 0l12.6-12.6a1.7 1.7 0 000-2.4z" fill="#F05032"/></svg></div><div class="tool-name">Git</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><path d="M16 2C8.27 2 2 8.27 2 16c0 6.18 4.01 11.42 9.57 13.27.7.13.96-.3.96-.67v-2.34c-3.9.85-4.72-1.88-4.72-1.88-.64-1.62-1.56-2.05-1.56-2.05-1.27-.87.1-.85.1-.85 1.41.1 2.15 1.45 2.15 1.45 1.25 2.14 3.28 1.52 4.08 1.16.13-.9.49-1.52.89-1.87-3.11-.35-6.38-1.56-6.38-6.93 0-1.53.55-2.78 1.44-3.76-.14-.36-.63-1.78.14-3.71 0 0 1.18-.38 3.85 1.44a13.4 13.4 0 013.5-.47c1.19.01 2.39.16 3.5.47 2.68-1.82 3.85-1.44 3.85-1.44.77 1.93.28 3.35.14 3.71.9.98 1.44 2.23 1.44 3.76 0 5.38-3.28 6.57-6.4 6.92.5.43.95 1.29.95 2.6v3.85c0 .37.25.81.96.67C25.99 27.42 30 22.18 30 16c0-7.73-6.27-14-14-14z" fill="#fff"/></svg></div><div class="tool-name">GitHub</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5L4.5 10v12L16 28.5 27.5 22V10L16 3.5z" fill="#339933"/><text x="9.5" y="20.5" font-size="8.5" fill="#fff" font-family="monospace" font-weight="bold">JS</text></svg></div><div class="tool-name">Node.js</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="4" fill="#217346"/><path d="M18 8h8v3h-8zm0 5h8v3h-8zm0 5h8v3h-8z" fill="#fff" fill-opacity=".5"/><path d="M7.5 8l3.5 6-3.5 6h2.8l2.2-3.8L16 20h2.8l-3.5-6 3.5-6H16l-2 3.8L11.8 8H7.5z" fill="#fff"/></svg></div><div class="tool-name">Excel</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><path d="M23.5 3.5l-11 10L6.5 8.5l-3 2 6 5.5-6 5.5 3 2 6-5 11 10 5-2.5V6l-5-2.5z" fill="#007ACC"/></svg></div><div class="tool-name">VS Code</div></div>
+    <div class="tool-item"><div class="tool-svg"><svg viewBox="0 0 32 32" fill="none"><path d="M16 5L30 27H2L16 5z" fill="#fff"/></svg></div><div class="tool-name">Vercel</div></div>
+  </div>
+  <div class="skills-bars-grid">
+    <div>
+      <div class="skill-group-title">Frontend & Design</div>
+      <div class="skill-row"><span class="skill-label">HTML / CSS</span><div class="skill-track"><div class="skill-fill" style="width:95%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">JavaScript</span><div class="skill-track"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">UI/UX Design</span><div class="skill-track"><div class="skill-fill" style="width:85%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">React</span><div class="skill-track"><div class="skill-fill" style="width:65%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Figma</span><div class="skill-track"><div class="skill-fill" style="width:88%"></div></div></div>
+    </div>
+    <div>
+      <div class="skill-group-title">Expanding Stack</div>
+      <div class="skill-row"><span class="skill-label">Supabase</span><div class="skill-track"><div class="skill-fill" style="width:75%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Excel <small>active</small></span><div class="skill-track"><div class="skill-fill" style="width:72%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Data Analysis <small>learning</small></span><div class="skill-track"><div class="skill-fill" style="width:45%"></div></div></div>
+      <div class="skill-row"><span class="skill-label">Node.js <small>learning</small></span><div class="skill-track"><div class="skill-fill" style="width:35%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="experience">
+  <div class="section-header"><span class="section-num">03 </span><h2 class="section-title">Projects</h2></div>
+  <div class="projects-grid">
+
+    <!-- ReachCare -->
+    <a href="https://reach-care.vercel.app/" target="_blank" class="proj-card">
+      <div class="proj-thumb">
+        <iframe id="thumb-reachcare" src="about:blank" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="proj-thumb-overlay"></div>
+        <div class="proj-thumb-fallback" id="fb-reachcare">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>reach-care.vercel.app</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-top"><div class="proj-name">ReachCare</div><span class="proj-type">Startup · Healthcare</span></div>
+        <p class="proj-desc">Healthcare access platform for rural Nigeria. Community health workers + mobile app with USSD fallback for feature phones.</p>
+        <div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">Figma</span><span class="proj-tag">Backend</span><span class="proj-tag">USSD</span><span class="proj-tag">Founder</span></div>
+        <div class="proj-link">Visit live site ↗</div>
+      </div>
+    </a>
+
+    <!-- EKSU Lodge -->
+    <a href="https://damola1-tech.github.io/eksulodge/" target="_blank" class="proj-card">
+      <div class="proj-thumb">
+        <iframe id="thumb-eksu" src="about:blank" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="proj-thumb-overlay"></div>
+        <div class="proj-thumb-fallback" id="fb-eksu">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>eksulodge</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-top"><div class="proj-name">EKSU Lodge</div><span class="proj-type">Web App · PropTech</span></div>
+        <p class="proj-desc">Student accommodation finder for EKSU. Filter by price, location and amenities, with gallery, call-to-book, and Supabase backend.</p>
+        <div class="proj-tags"><span class="proj-tag">Figma</span><span class="proj-tag">HTML/CSS/JS</span><span class="proj-tag">Supabase</span><span class="proj-tag">GitHub Pages</span></div>
+        <div class="proj-link">Visit live site ↗</div>
+      </div>
+    </a>
+
+    <!-- DANNIT -->
+    <a href="https://damola1-tech.github.io/dannit-enterprises/" target="_blank" class="proj-card">
+      <div class="proj-thumb">
+        <iframe id="thumb-dannit" src="about:blank" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="proj-thumb-overlay"></div>
+        <div class="proj-thumb-fallback" id="fb-dannit">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>dannit-enterprises</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-top"><div class="proj-name">DANNIT Enterprises</div><span class="proj-type">Web · LegalTech</span></div>
+        <p class="proj-desc">CAC business registration service for Nigerian SMEs. Multi-step form, document checklists, WhatsApp-primary submission.</p>
+        <div class="proj-tags"><span class="proj-tag">Figma</span><span class="proj-tag">HTML/CSS/JS</span><span class="proj-tag">Form UX</span><span class="proj-tag">Nigeria</span><span class="proj-tag">Multi-step</span></div>
+        <div class="proj-link">Visit live site ↗</div>
+      </div>
+    </a>
+
+        <!-- E&E Scents -->
+    <a href="https://damola1-tech.github.io/E-E-scents/" target="_blank" class="proj-card">
+      <div class="proj-thumb">
+        <iframe id="thumb-eescents" src="about:blank" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="proj-thumb-overlay"></div>
+        <div class="proj-thumb-fallback" id="fb-eescents">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>E&E Scents</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-top"><div class="proj-name">E&amp;E Scents</div><span class="proj-type">Web · eCommerce</span></div>
+        <p class="proj-desc">A fragrance brand website with product showcasing, clean layout, and mobile-first design focused on visual branding and user experience.</p>
+        <div class="proj-tags"><span class="proj-tag">Figma</span><span class="proj-tag">HTML/CSS/JS</span><span class="proj-tag">GitHub Pages</span><span class="proj-tag">Mobile-first</span><span class="proj-tag">eCommerce</span></div>
+        <div class="proj-link">Visit live site ↗</div>
+      </div>
+    </a>
+
+    <!-- Tennda -->
+    <a href="#" class="proj-card" style="cursor:default;" onclick="return false;">
+      <div class="proj-thumb" style="background:var(--bg3);display:flex;align-items:center;justify-content:center;">
+        <div class="proj-thumb-fallback" style="position:relative;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>Tennda</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-top"><div class="proj-name">Tennda</div><span class="proj-type">EdTech · Platform</span></div>
+        <p class="proj-desc">School attendance & ID platform, automates attendance tracking, scannable ID card generation, and institution-wide reporting for admins, lecturers, and students.</p>
+        <div class="proj-tags"><span class="proj-tag">Figma</span><span class="proj-tag">Dashboard</span></div>
+        <div class="proj-link" style="color:var(--muted);">In progress — link coming soon</div>
+      </div>
+    </a>
+
+    <!-- Vincylee -->
+    <a href="#" class="proj-card" style="cursor:default;" onclick="return false;">
+      <div class="proj-thumb" style="background:var(--bg3);display:flex;align-items:center;justify-content:center;">
+        <div class="proj-thumb-fallback" style="position:relative;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6a6a6a" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>Vincylee</span>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-top"><div class="proj-name">Vincylee Phone Exchange</div><span class="proj-type">Web · eCommerce</span></div>
+        <p class="proj-desc">Mobile-responsive phone trade-in platform with product listing pages, inquiry forms, and strong focus on branding alignment and CTA effectiveness.</p>
+        <div class="proj-tags"><span class="proj-tag">Figma</span><span class="proj-tag">Mobile-first</span></div>
+        <div class="proj-link" style="color:var(--muted);">In progress — link coming soon</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="section" id="edu">
+  <div class="section-header"><span class="section-num">04 </span><h2 class="section-title">Education</h2></div>
+  <div class="edu-row">
+    <div class="edu-dot"></div>
+    <div>
+      <div class="edu-degree">B.Sc. Computer Science</div>
+      <div class="edu-school">Ekiti State University (EKSU), Ado-Ekiti</div>
+      <div class="edu-date">2023 – 2026 · Final year · Graduating April 2026</div>
+    </div>
+  </div>
+  <div class="edu-row">
+    <div class="edu-dot" style="background:var(--muted);"></div>
+    <div>
+      <div class="edu-degree" style="color:var(--muted2);">Final Year Project</div>
+      <div class="edu-date">AI-based student health monitoring & alert system with rule-based risk classification</div>
+    </div>
+  </div>
+  <div class="edu-row" style="opacity:0.4;">
+    <div class="edu-dot" style="background:var(--muted);"></div>
+    <div>
+      <div class="edu-degree" style="color:var(--muted2);">Certificates — in progress</div>
+      <div class="edu-date">Building credentials through real-world projects</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="section-header"><span class="section-num">05 </span><h2 class="section-title">Contact</h2></div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Open to internships, freelance, collaborations, or just a conversation about building things that matter. I reply fast.</p>
+      <div class="contact-links-list">
+        <a href="mailto:lawaloyindamolashinaayomi@gmail.com" class="clink">
+          <div class="clink-icon">✉</div>lawaloyindamolashinaayomi@gmail.com
+        </a>
+        <a href="https://github.com/Damola1-tech" target="_blank" class="clink">
+          <div class="clink-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+          github.com/Damola1-tech
+        </a>
+        <a href="https://twitter.com/ShinaayomiLawal" target="_blank" class="clink">
+          <div class="clink-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+          @ShinaayomiLawal
+        </a>
+        <a class="clink" style="opacity:0.45;cursor:default;">
+          <div class="clink-icon">in</div>LinkedIn — coming soon
+        </a>
+      </div>
+    </div>
+    <form class="contact-form" onsubmit="return false;">
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your full name"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="you@example.com"/></div>
+      <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Tell me what you're building..."></textarea></div>
+      <button type="submit" class="submit-btn">Send Message →</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-note">Lawal <span>Oyindamola</span> </div>
+  <div class="footer-note" style="display:flex;align-items:center;gap:6px;">2026</div>
+</footer>
+
+<script>
+  // ── NAV HIGHLIGHT ──
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.nav-tabs a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id);
+      });
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+
+  // ── LAZY IFRAME PREVIEWS ──
+  // Load iframes only when scrolled into view to avoid blocking page load
+  const projects = [
+    { iframe: 'thumb-reachcare', fb: 'fb-reachcare', url: 'https://reach-care.vercel.app/' },
+    { iframe: 'thumb-eksu',      fb: 'fb-eksu',      url: 'https://damola1-tech.github.io/eksulodge/' },
+    { iframe: 'thumb-dannit',    fb: 'fb-dannit',     url: 'https://damola1-tech.github.io/dannit-enterprises/' },
+    { iframe: 'thumb-eescents', fb: 'fb-eescents', url: 'https://damola1-tech.github.io/E-E-scents/' },
+  ];
+
+  const thumbObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const data = projects.find(p => p.iframe === el.id);
+      if (!data) return;
+      thumbObserver.unobserve(el);
+
+      el.src = data.url;
+
+      // If iframe loads, hide fallback
+      el.onload = () => {
+        try {
+          const fb = document.getElementById(data.fb);
+          if (fb) fb.style.display = 'none';
+        } catch(e) {}
+      };
+
+      // If iframe errors (X-Frame-Options etc), keep fallback visible
+      el.onerror = () => {};
+
+      // Timeout fallback — if no load event after 6s, show fallback styled nicely
+      setTimeout(() => {
+        const fb = document.getElementById(data.fb);
+        if (fb && fb.style.display !== 'none') {
+          fb.innerHTML = `
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e8a020" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span style="color:#9a9a9a;font-size:10px;">${data.url.replace('https://','')}</span>
+            <span style="color:#e8a020;font-size:9px;margin-top:2px;">Click to visit ↗</span>
+          `;
+        }
+      }, 6000);
+    });
+  }, { threshold: 0.1 });
+
+  projects.forEach(p => {
+    const el = document.getElementById(p.iframe);
+    if (el) thumbObserver.observe(el);
+  });
+
+  // ── AUTO SCALE IFRAMES TO FIT CARD WIDTH ──
+function scaleIframes() {
+  document.querySelectorAll('.proj-thumb').forEach(thumb => {
+    const iframe = thumb.querySelector('iframe');
+    if (!iframe) return;
+    const cardWidth = thumb.offsetWidth;
+    const scale = cardWidth / 1280;
+    iframe.style.transform = `scale(${scale})`;
+    thumb.style.height = Math.round(720 * scale) + 'px';
+  });
+}
+
+scaleIframes();
+window.addEventListener('resize', scaleIframes);
+
+</script>
+</body>
+</html>
