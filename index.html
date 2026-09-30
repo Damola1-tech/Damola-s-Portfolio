@@ -187,6 +187,10 @@
   .form-textarea { min-height:100px; }
   .submit-btn { padding:0.75rem 1.5rem; background:var(--amber); color:#000; font-weight:700; font-size:13px; border:none; border-radius:6px; cursor:pointer; font-family:var(--body); transition:background 0.2s; align-self:flex-start; }
   .submit-btn:hover { background:var(--amber-lt); }
+  .submit-btn:disabled { opacity:0.6; cursor:not-allowed; }
+  .form-status { font-size:12px; font-family:var(--mono); min-height:18px; color:var(--muted2); }
+  .form-status.ok { color:#3ddc84; }
+  .form-status.err { color:#ff6b6b; }
 
   footer { border-top:1px solid var(--border); padding:2rem 3rem; display:flex; align-items:center; justify-content:space-between; max-width:1000px; margin:0 auto; }
   .footer-note { font-size:11px; color:var(--muted); font-family:var(--mono); }
@@ -578,11 +582,15 @@
         </a>
       </div>
     </div>
-    <form class="contact-form" onsubmit="return false;">
-      <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your full name"/></div>
-      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="you@example.com"/></div>
-      <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Tell me what you're building..."></textarea></div>
-      <button type="submit" class="submit-btn">Send Message →</button>
+    <form class="contact-form" id="contact-form">
+      <input type="hidden" name="access_key" value="bbc5c868-806d-4a53-b528-304f117cc4c9"/>
+      <input type="hidden" name="subject" value="New message from your portfolio"/>
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" name="name" required placeholder="Your full name"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" name="email" required placeholder="you@example.com"/></div>
+      <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" name="message" required placeholder="Tell me what you're building..."></textarea></div>
+      <button type="submit" class="submit-btn" id="submit-btn">Send Message →</button>
+      <div id="form-status" class="form-status"></div>
     </form>
   </div>
 </section>
@@ -654,6 +662,40 @@
   projects.forEach(p => {
     const el = document.getElementById(p.iframe);
     if (el) thumbObserver.observe(el);
+  });
+
+  // ── CONTACT FORM ──
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    formStatus.className = 'form-status';
+    formStatus.textContent = '';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(contactForm)))
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        formStatus.textContent = "Message sent. I'll reply soon.";
+        formStatus.classList.add('ok');
+        contactForm.reset();
+      } else {
+        throw new Error(data.message || 'Failed');
+      }
+    } catch (err) {
+      formStatus.textContent = 'Could not send. Email me directly at lawaloyindamolashinaayomi@gmail.com';
+      formStatus.classList.add('err');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message →';
+    }
   });
 
   // ── AUTO SCALE IFRAMES TO FIT CARD WIDTH ──
